@@ -1,0 +1,29 @@
+version: '2'
+services:
+  http-redirector:
+    scale: ${redirector_scale}
+    start_on_create: true
+  lb:
+    scale: ${lb_scale}
+    start_on_create: true
+    lb_config:
+      certs: 
+        ${certificates}
+      default_cert: ${default_certificate}
+      port_rules:
+        ${port_rules}
+      stickiness_policy:
+        cookie: ${cookie_name}
+        domain: 
+        indirect: false
+        mode: insert
+        nocache: false
+        postonly: false
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 42
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      reinitializing_timeout: 60000
