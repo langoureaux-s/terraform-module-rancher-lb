@@ -7,8 +7,13 @@ variable "stack_name" {
 variable "finish_upgrade" {
   description = "Automatically finish upgrade on Rancher when apply new plan"
 }
-variable "label_global_scheduling" {
-  description = "The label to use when schedule this stack as global scheduling"
+variable "label_scheduling" {
+  description = "The label to use when schedule this stack"
+  default = ""
+}
+variable "global_scheduling" {
+  description = "Set to true if you should to deploy on all node that match label_scheduling"
+  default     = "true"
 }
 
 variable "lb_version" {
@@ -21,6 +26,7 @@ variable "lb_ports" {
 }
 variable "lb_scale" {
   description = "The number instance of Load Balancer"
+  default = ""
 }
 variable "certificates" {
   description = "The list of Rancher certificates"
@@ -62,4 +68,5 @@ variable "redirector_ports" {
 }
 variable "redirector_scale" {
   description = "The number instance of redirector"
+  default = ""
 }

@@ -18,10 +18,11 @@ data "template_file" "docker_compose_lb" {
   template = "${file("${path.module}/rancher/lb/docker-compose.yml")}"
 
   vars {
-    lb_version = "${var.lb_version}"
-    label_global_scheduling = "${var.label_global_scheduling}"
-    lb_ports = "${indent(8, join("\n", formatlist("- %s", var.lb_ports)))}"
-    redirector_ports = "${indent(8, join("\n", formatlist("- %s", var.redirector_ports)))}"
+    lb_version              = "${var.lb_version}"
+    label_scheduling        = "${var.label_scheduling}"
+    global_scheduling       = "${var.global_scheduling}"
+    lb_ports                = "${indent(8, join("\n", formatlist("- %s", var.lb_ports)))}"
+    redirector_ports        = "${indent(8, join("\n", formatlist("- %s", var.redirector_ports)))}"
   }
 }
 data "template_file" "rancher_compose_lb" {
