@@ -29,8 +29,8 @@ data "template_file" "rancher_compose_lb" {
   template = "${file("${path.module}/rancher/lb/rancher-compose.yml")}"
 
   vars {
-    redirector_scale    = "${var.redirector_scale}"
-    lb_scale            = "${var.lb_scale}"
+    redirector_scale    = "${var.redirector_scale != "" ? "scale: var.redirector_scale" : ""}"
+    lb_scale            = "${var.lb_scale != "" ? "scale: var.lb_scale" : ""}"
     certificates        = "${indent(8, join("\n", formatlist("- %s", var.certificates)))}"
     default_certificate = "${var.default_certificate}"
     cookie_name         = "${var.cookie_name}"

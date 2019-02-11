@@ -1,10 +1,10 @@
 version: '2'
 services:
   http-redirector:
-    scale: ${redirector_scale}
+    ${redirector_scale}
     start_on_create: true
   lb:
-    scale: ${lb_scale}
+    ${lb_scale}
     start_on_create: true
     lb_config:
       certs: 
