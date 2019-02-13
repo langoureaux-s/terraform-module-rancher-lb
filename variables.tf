@@ -31,9 +31,11 @@ variable "lb_scale" {
 variable "certificates" {
   description = "The list of Rancher certificates"
   type = "list"
+  default = []
 }
 variable "default_certificate" {
   description = "Default certificate"
+  default = ""
 }
 variable "cookie_name" {
   description = "The cookie name"
