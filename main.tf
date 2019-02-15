@@ -39,7 +39,7 @@ data "template_file" "rancher_compose_lb" {
   template = "${file("${path.module}/rancher/lb/rancher-compose.yml")}"
 
   vars {
-    redirector_scale    = "${local.redirector_scale"
+    redirector_scale    = "${local.redirector_scale}"
     lb_scale            = "${local.lb_scale}"
     certificates        = "${local.certificates}"
     default_certificate = "${var.default_certificate}"
