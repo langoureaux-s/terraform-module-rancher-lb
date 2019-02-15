@@ -13,6 +13,16 @@ data "rancher_environment" "project" {
   name = "${var.project_name}"
 }
 
+locals {
+  lb_ports          = "${indent(6, join("\n", formatlist("- %s", var.lb_ports)))}"
+  redirector_ports  = "${indent(6, join("\n", formatlist("- %s", var.redirector_ports)))}"
+  redirector_scale  = "${var.redirector_scale != "" ? "scale: ${var.redirector_scale}" : ""}"
+  lb_scale          = "${var.lb_scale != "" ? "scale: ${var.lb_scale}" : ""}"
+  certificates      = "${indent(8, join("\n", formatlist("- %s", var.certificates)))}"
+  port_rules        = "${indent(8, join("\n", formatlist("- hostname: %s\n  protocol: %s\n  service: %s\n  source_port: %s\n  target_port: %s", var.hostnames, var.protocols, var.services, var.sources_port, var.targets_port)))}"
+  
+}
+
 
 data "template_file" "docker_compose_lb" {
   template = "${file("${path.module}/rancher/lb/docker-compose.yml")}"
@@ -21,20 +31,20 @@ data "template_file" "docker_compose_lb" {
     lb_version              = "${var.lb_version}"
     label_scheduling        = "${var.label_scheduling}"
     global_scheduling       = "${var.global_scheduling}"
-    lb_ports                = "${indent(8, join("\n", formatlist("- %s", var.lb_ports)))}"
-    redirector_ports        = "${indent(8, join("\n", formatlist("- %s", var.redirector_ports)))}"
+    lb_ports                = "${local.lb_ports}"
+    redirector_ports        = "${local.redirector_ports}"
   }
 }
 data "template_file" "rancher_compose_lb" {
   template = "${file("${path.module}/rancher/lb/rancher-compose.yml")}"
 
   vars {
-    redirector_scale    = "${var.redirector_scale != "" ? "scale: ${var.redirector_scale}" : ""}"
-    lb_scale            = "${var.lb_scale != "" ? "scale: ${var.lb_scale}" : ""}"
-    certificates        = "${indent(8, join("\n", formatlist("- %s", var.certificates)))}"
+    redirector_scale    = "${local.redirector_scale"
+    lb_scale            = "${local.lb_scale}"
+    certificates        = "${local.certificates}"
     default_certificate = "${var.default_certificate}"
     cookie_name         = "${var.cookie_name}"
-    port_rules          = "${indent(8, join("\n", formatlist("- hostname: %s\n  protocol: %s\n  service: %s\n  source_port: %s\n  target_port: %s", var.hostnames, var.protocols, var.services, var.sources_port, var.targets_port)))}"
+    port_rules          = "${local.port_rules}"
   }
 }
 resource "rancher_stack" "this" {
