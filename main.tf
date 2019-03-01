@@ -77,7 +77,7 @@ data "template_file" "docker_compose_lb" {
     lb_ports                = "${local.lb_ports_computed}"
   }
 }
-data "template_file" "rancher_compose_redirector" {
+data "template_file" "rancher_compose_lb" {
   template = "${file("${path.module}/rancher/lb/rancher-compose.yml")}"
   count    = "${var.deploy_redirector != "true" ? 1 : 0 }"
 
