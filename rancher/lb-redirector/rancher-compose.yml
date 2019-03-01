@@ -1,5 +1,8 @@
 version: '2'
 services:
+  http-redirector:
+    ${redirector_scale}
+    start_on_create: true
   lb:
     ${lb_scale}
     start_on_create: true
@@ -8,7 +11,13 @@ services:
       ${default_certificate}
       port_rules:
         ${port_rules}
-      ${stickiness_policy}
+      stickiness_policy:
+        cookie: ${cookie_name}
+        domain: 
+        indirect: false
+        mode: insert
+        nocache: false
+        postonly: false
     health_check:
       healthy_threshold: 2
       response_timeout: 2000

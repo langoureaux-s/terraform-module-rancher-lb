@@ -1,0 +1,19 @@
+version: '2'
+services:
+  lb:
+    image: rancher/lb-service-haproxy:${lb_version}
+    ports:
+      ${lb_ports}
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${label_scheduling}
+      io.rancher.container.agent.role: environmentAdmin
+      io.rancher.container.create_agent: 'true'
+      io.rancher.scheduler.global: ${global_scheduling}
+  http-redirector:
+    image: meltwater/https-redirector
+    ports:
+      ${redirector_ports}
+    labels:
+      io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=$$$${stack_name}/$$$${service_name}
+      io.rancher.scheduler.affinity:host_label: ${label_scheduling}
+      io.rancher.scheduler.global: ${global_scheduling}

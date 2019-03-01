@@ -67,8 +67,14 @@ variable "targets_port" {
 variable "redirector_ports" {
   description = "The list of port to expose on redirector like 80:80/tcp"
   type = "list"
+  default = []
 }
 variable "redirector_scale" {
   description = "The number instance of redirector"
   default = ""
+}
+
+variable "deploy_redirector" {
+  description = "Permit to deploy redirector http to force https"
+  default = "true"
 }
