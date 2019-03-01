@@ -20,7 +20,9 @@ locals {
   redirector_scale  = "${var.redirector_scale != "" ? "scale: ${var.redirector_scale}" : ""}"
   lb_scale          = "${var.lb_scale != "" ? "scale: ${var.lb_scale}" : ""}"
   certificates      = "${length(var.certificates) > 0 ? "certs:\n${indent(8, join("\n", formatlist("- %s", var.certificates)))}" : ""}"
-  port_rules        = "${length(var.hostnames) > 0 ? join("\n", formatlist("- protocol: %s\n  service: %s\n  source_port: %s\n  target_port: %s", var.hostnames, var.services, var.sources_port, var.targets_port)) : join("\n", formatlist("- protocol: %s\n  service: %s\n  source_port: %s\n  target_port: %s", var.protocols, var.services, var.sources_port, var.targets_port))}"
+  section_hostname  = "${join("\n", formatlist("- protocol: %s\n  service: %s\n  source_port: %s\n  target_port: %s", var.hostnames, var.services, var.sources_port, var.targets_port))}"
+  section_without_hostname = "{join("\n", formatlist("- protocol: %s\n  service: %s\n  source_port: %s\n  target_port: %s", var.protocols, var.services, var.sources_port, var.targets_port))}"
+  port_rules        = "${length(var.hostnames) > 0 ? "${local.section_hostname}"  : "${local.section_without_hostname}"}"
   port_rules_computed = "${indent(8, local.port_rules)}"
   stickiness_policy = "${var.cookie_name != "" ? indent(6, "stickiness_policy:\n  cookie: ${var.cookie_name}\n  domain:\n  indirect: false\n  mode: insert\n  nocache: false\n  postonly: false") : ""}"
   default_certificate = "${var.default_certificate != "" ? "default_cert: ${var.default_certificate}": ""}"
@@ -50,7 +52,7 @@ data "template_file" "rancher_compose_lb_redirector" {
     certificates        = "${local.certificates}"
     default_certificate = "${local.default_certificate}"
     cookie_name         = "${var.cookie_name}"
-    port_rules          = "${local.port_rules}"
+    port_rules          = "${local.port_rules_computed}"
     stickiness_policy   = "${local.stickiness_policy}"
   }
 }
@@ -87,7 +89,7 @@ data "template_file" "rancher_compose_lb" {
     certificates        = "${local.certificates}"
     default_certificate = "${local.default_certificate}"
     cookie_name         = "${var.cookie_name}"
-    port_rules          = "${local.port_rules}"
+    port_rules          = "${local.port_rules_computed}"
     stickiness_policy   = "${local.stickiness_policy}"
   }
 }
