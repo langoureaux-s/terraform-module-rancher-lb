@@ -80,3 +80,8 @@ variable "deploy_redirector" {
   description = "Permit to deploy redirector http to force https"
   default = "true"
 }
+
+variable "public_ports" {
+  description = "Expose ports on hosts"
+  default = "true"
+}

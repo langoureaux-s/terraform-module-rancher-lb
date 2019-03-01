@@ -2,8 +2,7 @@ version: '2'
 services:
   lb:
     image: rancher/lb-service-haproxy:${lb_version}
-    ports:
-      ${lb_ports}
+    ${lb_ports}
     labels:
       io.rancher.scheduler.affinity:host_label: ${label_scheduling}
       io.rancher.container.agent.role: environmentAdmin
