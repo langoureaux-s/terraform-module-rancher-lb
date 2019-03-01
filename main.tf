@@ -16,7 +16,7 @@ data "rancher_environment" "project" {
 locals {
   lb_ports          = "${join("\n", formatlist("- %s", var.lb_ports))}"
   lb_ports_computed = "${indent(6, "${var.public_ports == "true" ? "ports:\n${local.lb_ports}" : "expose:\n${local.lb_ports}"}")}"
-  redirector_ports  = "${indent(6, join("\n", formatlist("- %s", var.redirector_ports)))}"
+  redirector_ports  = "${length(var.certificates) > 0 ? "${indent(6, join("\n", formatlist("- %s", var.redirector_ports)))}" : ""}"
   redirector_scale  = "${var.redirector_scale != "" ? "scale: ${var.redirector_scale}" : ""}"
   lb_scale          = "${var.lb_scale != "" ? "scale: ${var.lb_scale}" : ""}"
   certificates      = "${length(var.certificates) > 0 ? "certs:\n${indent(8, join("\n", formatlist("- %s", var.certificates)))}" : ""}"
