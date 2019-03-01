@@ -21,7 +21,7 @@ locals {
   lb_scale          = "${var.lb_scale != "" ? "scale: ${var.lb_scale}" : ""}"
   certificates      = "${length(var.certificates) > 0 ? "certs:\n${indent(8, join("\n", formatlist("- %s", var.certificates)))}" : ""}"
   section_hostname  = "${join("\n", formatlist("- protocol: %s\n  service: %s\n  source_port: %s\n  target_port: %s", var.hostnames, var.services, var.sources_port, var.targets_port))}"
-  section_without_hostname = "{join("\n", formatlist("- protocol: %s\n  service: %s\n  source_port: %s\n  target_port: %s", var.protocols, var.services, var.sources_port, var.targets_port))}"
+  section_without_hostname = "${join("\n", formatlist("- protocol: %s\n  service: %s\n  source_port: %s\n  target_port: %s", var.protocols, var.services, var.sources_port, var.targets_port))}"
   port_rules        = "${length(var.hostnames) > 0 ? "${local.section_hostname}"  : "${local.section_without_hostname}"}"
   port_rules_computed = "${indent(8, local.port_rules)}"
   stickiness_policy = "${var.cookie_name != "" ? indent(6, "stickiness_policy:\n  cookie: ${var.cookie_name}\n  domain:\n  indirect: false\n  mode: insert\n  nocache: false\n  postonly: false") : ""}"
