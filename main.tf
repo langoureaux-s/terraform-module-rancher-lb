@@ -75,7 +75,6 @@ data "template_file" "docker_compose_lb" {
     label_scheduling        = "${var.label_scheduling}"
     global_scheduling       = "${var.global_scheduling}"
     lb_ports                = "${local.lb_ports_computed}"
-    redirector_ports        = "${local.redirector_ports}"
   }
 }
 data "template_file" "rancher_compose_redirector" {
@@ -83,7 +82,6 @@ data "template_file" "rancher_compose_redirector" {
   count    = "${var.deploy_redirector != "true" ? 1 : 0 }"
 
   vars {
-    redirector_scale    = "${local.redirector_scale}"
     lb_scale            = "${local.lb_scale}"
     certificates        = "${local.certificates}"
     default_certificate = "${local.default_certificate}"
@@ -100,6 +98,6 @@ resource "rancher_stack" "this" {
   scope           = "user"
   start_on_create = true
   finish_upgrade  = "${var.finish_upgrade}"
-  docker_compose  = "${data.template_file.docker_compose_lb_redirector.rendered}"
-  rancher_compose = "${data.template_file.rancher_compose_lb_redirector.rendered}"
+  docker_compose  = "${data.template_file.docker_compose_lb.rendered}"
+  rancher_compose = "${data.template_file.rancher_compose_lb.rendered}"
 }
