@@ -20,7 +20,7 @@ locals {
   redirector_scale  = "${var.redirector_scale != "" ? "scale: ${var.redirector_scale}" : ""}"
   lb_scale          = "${var.lb_scale != "" ? "scale: ${var.lb_scale}" : ""}"
   certificates      = "${length(var.certificates) > 0 ? "certs:\n${indent(8, join("\n", formatlist("- %s", var.certificates)))}" : ""}"
-  port_rules        = "${length(var.hostnames) > 1 ? "${indent(8, join("\n", formatlist("- hostname: %s\n  protocol: %s\n  service: %s\n  source_port: %s\n  target_port: %s", var.hostnames, var.protocols, var.services, var.sources_port, var.targets_port)))}" : "${indent(8, join("\n", formatlist("- protocol: %s\n  service: %s\n  source_port: %s\n  target_port: %s", var.protocols, var.services, var.sources_port, var.targets_port)))}"}"
+  port_rules        = "${length(var.hostnames) > 0 ? "" : ""}"
   stickiness_policy = "${var.cookie_name != "" ? indent(6, "stickiness_policy:\n  cookie: ${var.cookie_name}\n  domain:\n  indirect: false\n  mode: insert\n  nocache: false\n  postonly: false") : ""}"
   default_certificate = "${var.default_certificate != "" ? "default_cert: ${var.default_certificate}": ""}"
 }
