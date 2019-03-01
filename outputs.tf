@@ -9,5 +9,5 @@ output "stack_id" {
 }
 
 output "stack_name" {
-  value = "${join("", local.stack_name)}/elasticsearch"
+  value = "${join("", local.stack_name)}/lb"
 }
