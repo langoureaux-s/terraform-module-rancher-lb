@@ -44,7 +44,6 @@ variable "cookie_name" {
 variable "hostnames" {
   description = "The list of alias DNS"
   type = "list"
-  default = []
 }
 variable "protocols" {
   description = "The list of protocols to use for each hostname"
