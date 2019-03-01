@@ -28,7 +28,7 @@ locals {
 # Stack with redirector
 data "template_file" "docker_compose_lb_redirector" {
   template = "${file("${path.module}/rancher/lb-redirector/docker-compose.yml")}"
-  count    = "{var.deploy_redirector == "true" ? 1 : 0 }"
+  count    = "${var.deploy_redirector == "true" ? 1 : 0 }"
 
   vars {
     lb_version              = "${var.lb_version}"
@@ -40,7 +40,7 @@ data "template_file" "docker_compose_lb_redirector" {
 }
 data "template_file" "rancher_compose_lb_redirector" {
   template = "${file("${path.module}/rancher/lb-redirector/rancher-compose.yml")}"
-  count    = "{var.deploy_redirector == "true" ? 1 : 0 }"
+  count    = "${var.deploy_redirector == "true" ? 1 : 0 }"
 
   vars {
     redirector_scale    = "${local.redirector_scale}"
@@ -53,7 +53,7 @@ data "template_file" "rancher_compose_lb_redirector" {
   }
 }
 resource "rancher_stack" "this_redirector" {
-  count           = "{var.deploy_redirector == "true" ? 1 : 0 }"
+  count           = "${var.deploy_redirector == "true" ? 1 : 0 }"
   name            = "${var.stack_name}"
   description     = "Load Balancer"
   environment_id  = "${data.rancher_environment.project.id}"
@@ -67,7 +67,7 @@ resource "rancher_stack" "this_redirector" {
 #Stack without redirector
 data "template_file" "docker_compose_lb" {
   template = "${file("${path.module}/rancher/lb/docker-compose.yml")}"
-  count    = "{var.deploy_redirector != "true" ? 1 : 0 }"
+  count    = "${var.deploy_redirector != "true" ? 1 : 0 }"
 
   vars {
     lb_version              = "${var.lb_version}"
@@ -79,7 +79,7 @@ data "template_file" "docker_compose_lb" {
 }
 data "template_file" "rancher_compose_redirector" {
   template = "${file("${path.module}/rancher/lb/rancher-compose.yml")}"
-  count    = "{var.deploy_redirector != "true" ? 1 : 0 }"
+  count    = "${var.deploy_redirector != "true" ? 1 : 0 }"
 
   vars {
     redirector_scale    = "${local.redirector_scale}"
@@ -92,7 +92,7 @@ data "template_file" "rancher_compose_redirector" {
   }
 }
 resource "rancher_stack" "this" {
-  count           = "{var.deploy_redirector != "true" ? 1 : 0 }"
+  count           = "${var.deploy_redirector != "true" ? 1 : 0 }"
   name            = "${var.stack_name}"
   description     = "Load Balancer"
   environment_id  = "${data.rancher_environment.project.id}"
