@@ -35,7 +35,7 @@ data "template_file" "docker_compose_lb_redirector" {
     lb_version              = "${var.lb_version}"
     label_scheduling        = "${var.label_scheduling}"
     global_scheduling       = "${var.global_scheduling}"
-    lb_ports                = "${local.lb_ports}"
+    lb_ports                = "${local.lb_ports_computed}"
     redirector_ports        = "${local.redirector_ports}"
   }
 }
@@ -74,7 +74,7 @@ data "template_file" "docker_compose_lb" {
     lb_version              = "${var.lb_version}"
     label_scheduling        = "${var.label_scheduling}"
     global_scheduling       = "${var.global_scheduling}"
-    lb_ports                = "${local.lb_ports}"
+    lb_ports                = "${local.lb_ports_computed}"
     redirector_ports        = "${local.redirector_ports}"
   }
 }
