@@ -9,6 +9,10 @@ services:
       port_rules:
         ${port_rules}
       ${stickiness_policy}
+      config: |-
+        defaults
+          timeout client 10m
+          timeout server 10m
     health_check:
       healthy_threshold: 2
       response_timeout: 2000
